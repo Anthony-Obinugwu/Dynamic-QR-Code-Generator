@@ -71,26 +71,26 @@ export default async function AdminDashboard() {
               <tbody>
                 {qrCodes.map((qr) => (
                   <tr key={qr.id}>
-                    <td>
+                    <td data-label="Name">
                       <div style={{ fontWeight: 500 }}>{qr.name}</div>
                       <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>/q/{qr.slug}</div>
                     </td>
-                    <td>
+                    <td data-label="Destination">
                       <a href={qr.destinationUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                         {qr.destinationUrl.length > 30 ? qr.destinationUrl.substring(0, 30) + '...' : qr.destinationUrl}
                         <ExternalLink size={14} />
                       </a>
                     </td>
-                    <td>{qr.scanCount}</td>
-                    <td>
+                    <td data-label="Scans">{qr.scanCount}</td>
+                    <td data-label="Status">
                       <span className={`${styles.statusBadge} ${qr.isActive ? styles.statusActive : styles.statusInactive}`}>
                         {qr.isActive ? 'Active' : 'Inactive'}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Created">
                       {new Date(qr.createdAt).toLocaleDateString()}
                     </td>
-                    <td>
+                    <td data-label="Actions">
                       <div className={styles.actionLinks}>
                         <Link href={`/admin/qr/${qr.id}`} className={styles.actionBtn} title="Analytics & Edit">
                           <BarChart size={18} />
