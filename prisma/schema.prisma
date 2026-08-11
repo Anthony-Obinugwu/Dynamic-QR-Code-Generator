@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model QRCode {
+  id             String    @id @default(uuid())
+  slug           String    @unique
+  name           String
+  description    String?
+  destinationUrl String
+  isActive       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  scanCount      Int       @default(0)
+  scans          QRScan[]
+}
+
+model QRScan {
+  id         String   @id @default(uuid())
+  qrCodeId   String
+  qrCode     QRCode   @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+  scannedAt  DateTime @default(now())
+  userAgent  String?
+  deviceType String?
+  referrer   String?
+  ipHash     String?
+}
