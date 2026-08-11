@@ -10,12 +10,20 @@ export function proxy(request: NextRequest) {
   // If trying to access admin routes without authentication
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!isAuthenticated) {
+      // Only redirect GET requests to login
+      if (request.method !== 'GET') {
+        return new NextResponse(null, { status: 401 });
+      }
       return NextResponse.redirect(new URL('/login', request.url));
     }
   }
 
   // If trying to access login while already authenticated
   if (isLoginPage && isAuthenticated) {
+    // Only redirect GET requests to admin
+    if (request.method !== 'GET') {
+      return NextResponse.next();
+    }
     return NextResponse.redirect(new URL('/admin', request.url));
   }
 
